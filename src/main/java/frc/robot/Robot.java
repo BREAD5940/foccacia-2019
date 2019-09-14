@@ -63,6 +63,7 @@ public class Robot extends TimedRobot {
     sRight = new WPI_TalonSRX(2);
 
     mLeft.setInverted(true);
+    sLeft.setInverted(true);
 
     // sLeft.setInverted(InvertType.OpposeMaster);
     // sLeft.set(ControlMode.Follower, mRight.getDeviceID());
@@ -95,60 +96,13 @@ public class Robot extends TimedRobot {
 
     mLeft.set(ControlMode.PercentOutput, left);
     mRight.set(ControlMode.PercentOutput, right);
-    sLeft.set(ControlMode.PercentOutput, -left);
+    sLeft.set(ControlMode.PercentOutput, left);
     sRight.set(ControlMode.PercentOutput, right);
 
 	// joy.setRumble(RumbleType.kLeftRumble, 1);
 
 
   }
-
-  /**
-   * This function is called every robot packet, no matter the mode. Use
-   * this for items like diagnostics that you want ran during disabled,
-   * autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before
-   * LiveWindow and SmartDashboard integrated updating.
-   */
-  @Override
-  public void robotPeriodic() {
-  }
-
-  /**
-   * This autonomous (along with the chooser code above) shows how to select
-   * between different autonomous modes using the dashboard. The sendable
-   * chooser code works with the Java SmartDashboard. If you prefer the
-   * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-   * getString line to get the auto name from the text box below the Gyro
-   *
-   * <p>You can add additional auto modes by adding additional comparisons to
-   * the switch structure below with additional strings. If using the
-   * SendableChooser make sure to add them to the chooser code above as well.
-   */
-  @Override
-  public void autonomousInit() {
-  }
-
-  /**
-   * This function is called periodically during autonomous.
-   */
-  @Override
-  public void autonomousPeriodic() {
-
-  }
-
-
-
-  /**
-   * This function is called periodically during test mode.
-   */
-  @Override
-  public void testPeriodic() {
-  }
-
-
-
 
 
 
