@@ -94,6 +94,9 @@ public class Robot extends TimedRobot {
     double left = forward + turn;
     double right = forward - turn;
 
+    if(Math.abs(left) < 0.05) left = 0.0;
+    if(Math.abs(right) < 0.05) right = 0.0;
+
     mLeft.set(ControlMode.PercentOutput, left);
     mRight.set(ControlMode.PercentOutput, right);
     sLeft.set(ControlMode.PercentOutput, left);
