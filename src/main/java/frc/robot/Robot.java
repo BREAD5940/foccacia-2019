@@ -7,11 +7,15 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -40,9 +44,15 @@ public class Robot extends TimedRobot {
 		return joy.getRawAxis(4);
 	}
 
-  private WPI_TalonSRX mLeft, mRight, sLeft, sRight;
+	DoubleSupplier intakeSupplier = () -> {
+		return joy.getRawAxis(xboxmap.Axis.RIGHT_TRIGGER) - joy.getRawAxis(xboxmap.Axis.LEFT_TRIGGER);
+	};
+
+  private WPI_TalonSRX mLeft, mRight, sLeft, sRight, intake;
   private SpeedControllerGroup left, right;
   private DifferentialDrive drive;
+  private DigitalInput ballllll = new DigitalInput(9);
+  private BooleanSupplier ball = () -> {return !ballllll.get();};
   
   // private static final String kDefaultAuto = "Default";
   // private static final String kCustomAuto = "My Auto";
@@ -60,23 +70,14 @@ public class Robot extends TimedRobot {
     sLeft = new WPI_TalonSRX(3);
 
     mRight = new WPI_TalonSRX(1);
-    sRight = new WPI_TalonSRX(2);
+	sRight = new WPI_TalonSRX(2);
+	
+	intake = new WPI_TalonSRX(0);
 
     mLeft.setInverted(true);
-    sLeft.setInverted(true);
+	sLeft.setInverted(true);
+	intake.setInverted(true);
 
-    // sLeft.setInverted(InvertType.OpposeMaster);
-    // sLeft.set(ControlMode.Follower, mRight.getDeviceID());
-    // sRight.set(ControlMode.Follower, mRight.getDeviceID());
-
-    // sLeft.set(ControlMode.PercentOutput, 0);
-    // sRight.set(ControlMode.PercentOutput, 0);
-
-    // drive = new DifferentialDrive(mLeft, sLeft);
-
-    // m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    // m_chooser.addOption("My Auto", kCustomAuto);
-    // SmartDashboard.putData("Auto choices", m_chooser);
   }
 
   /**
@@ -84,9 +85,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    // drive.curvatureDrive(getForwardAxis(), getTurnAxis(), joy.getRawButton(xboxmap.Buttons.RIGHT_JOYSTICK_BUTTON));
-    // mLeft.set(ControlMode.PercentOutput, 0.5);
-    // mRight.set(ControlMode.PercentOutput, 0.5);
 
     double forward = getForwardAxis();
     double turn = getTurnAxis();
@@ -102,7 +100,12 @@ public class Robot extends TimedRobot {
     sLeft.set(ControlMode.PercentOutput, left);
     sRight.set(ControlMode.PercentOutput, right);
 
-	// joy.setRumble(RumbleType.kLeftRumble, 1);
+	// if(ball.getAsBoolean()) {
+		intake.set(intakeSupplier.getAsDouble());
+	// } else {
+		// var power = Math.min(intakeSupplier.getAsDouble(), 0.0);
+		// intake.set(power);
+	// }
 
 
   }
